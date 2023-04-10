@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context,index){
           var reverseList = productModel!.data!.reversed.toList();
           final product = reverseList[index];
+          int reverseIndex = productModel!.data!.length -1 -index;
           return Card(
             margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
             child: Padding(
@@ -117,10 +118,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       IconButton(icon: Icon(Icons.edit), onPressed: (){
                                         Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateProdcutScreen(
-                                          productIndex: "$index",
-                                          productData: productModel?.data![index] ,
+                                          productIndex: "$reverseIndex",
+                                          productData: productModel?.data![reverseIndex] ,
                                         )));
-                                        print(index);
+                                        print(reverseIndex);
                                       }),
                                       IconButton(icon: Icon(Icons.delete), onPressed: ()async{
                                         final result = await NetworkApiService().getGetApiResponse(
