@@ -36,10 +36,13 @@ class _UpdateProdcutScreenState extends State<UpdateProdcutScreen> {
 
     productNameController.text = widget.productData?.productName ?? '';
     productCodeController.text = widget.productData?.productCode ?? '';
-    productImageController.text = widget.productData?.image ?? '';
+    productImageController.text = widget.productData?.img ?? '';
     productUnitPriceController.text = widget.productData?.unitPrice ?? '';
     productQtyController.text = widget.productData?.qty ?? '';
     productTotalPriceController.text = widget.productData?.totalPrice ?? '';
+
+
+
 
     return Scaffold(
       appBar: AppBar(
@@ -159,16 +162,16 @@ class _UpdateProdcutScreenState extends State<UpdateProdcutScreen> {
                   )
 
                       : ElevatedButton(
-                      child: const Text("Add product"),
+                      child: const Text("Update product"),
                         onPressed: ()async{
                           Map data =
                                 {
-                                  "Img":productImageController.text,
-                                  "ProductCode":productCodeController.text,
-                                  "ProductName":productNameController.text,
-                                  "Qty":productQtyController.text,
-                                  "TotalPrice":productTotalPriceController.text,
-                                  "UnitPrice":productUnitPriceController.text
+                                  "Img": productImageController.text,
+                                  "ProductCode": productCodeController.text,
+                                  "ProductName": productNameController.text,
+                                  "Qty": productQtyController.text,
+                                  "TotalPrice": productTotalPriceController.text,
+                                  "UnitPrice": productUnitPriceController.text
                                 };
 
                         if (_form.currentState!.validate()) {
@@ -177,7 +180,10 @@ class _UpdateProdcutScreenState extends State<UpdateProdcutScreen> {
 
                           });
                             final result = await NetworkApiService().gePostApiResponse(
-                                '${AppUrls.updateProductUrl}/$widget.productIndex', data);
+                                '${AppUrls.updateProductUrl}/${widget.productData?.sId}', data);
+
+                            print("update resutl ${widget.productData?.productCode}");
+
 
                             if(result['status']== 'success'){
                               ScaffoldMessenger.of(context).showSnackBar(
