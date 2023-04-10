@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 100,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: product.image == null ? Icon(Icons.image): Image.network(product.img ?? ""),
+                            child: product.img == null ? Icon(Icons.image): Image.network(product.img ?? ""),
                           ),
                         ),
                         const SizedBox(width: 20),
