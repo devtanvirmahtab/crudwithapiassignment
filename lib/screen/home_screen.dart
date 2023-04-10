@@ -1,9 +1,10 @@
-import 'package:crudwithapiassignment/screen/upload_product_screen.dart';
+import 'package:crudwithapiassignment/screen/update_product_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../data/networkapiservice.dart';
 import '../model/productmodel.dart';
 import '../res/app_url.dart';
+import 'add_product_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  productModel? _productModel;
+  ProductModel? productModel;
 
   @override
   void initState() {
@@ -28,25 +29,26 @@ class _HomeScreenState extends State<HomeScreen> {
     print(response);
     if (response['status'] == "success") {
       setState(() {
-        _productModel = productModel.fromJson(response);
+        productModel = ProductModel.fromJson(response);
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    productListApiRequest();
     return Scaffold(
       appBar: AppBar(
         title: Text("Product List"),
         centerTitle: true,
       ),
-      body: _productModel == null ? Center(
+      body: productModel == null ? Center(
         child: CircularProgressIndicator(),
       ) :
       ListView.builder(
-        itemCount: _productModel!.data!.length,
+        itemCount: productModel!.data!.length,
         itemBuilder: (context,index){
-          var reverseList = _productModel!.data!.reversed.toList();
+          var reverseList = productModel!.data!.reversed.toList();
           final product = reverseList[index];
           return Card(
             margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
@@ -114,9 +116,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ButtonBar(
                                     children: [
                                       IconButton(icon: Icon(Icons.edit), onPressed: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>UploadProdcutScreen(
-                                          editText: "editProduct",
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateProdcutScreen(
                                           productIndex: "$index",
+                                          productData: productModel?.data![index] ,
                                         )));
                                         print(index);
                                       }),
@@ -162,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ) ,
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>UploadProdcutScreen(editText: "upload",)));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddProdcutScreen()));
         },
       ),
     );

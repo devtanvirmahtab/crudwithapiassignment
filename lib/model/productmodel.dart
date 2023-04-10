@@ -1,15 +1,15 @@
-class productModel {
+class ProductModel {
   String? status;
-  List<Data>? data;
+  List<ProductData>? data;
 
-  productModel({this.status, this.data});
+  ProductModel({this.status, this.data});
 
-  productModel.fromJson(Map<String, dynamic> json) {
+  ProductModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <ProductData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new ProductData.fromJson(v));
       });
     }
   }
@@ -24,7 +24,7 @@ class productModel {
   }
 }
 
-class Data {
+class ProductData {
   String? createdDate;
   String? sId;
   int? id;
@@ -47,7 +47,7 @@ class Data {
   String? qty;
   String? totalPrice;
 
-  Data(
+  ProductData(
       {this.createdDate,
         this.sId,
         this.id,
@@ -70,7 +70,7 @@ class Data {
         this.qty,
         this.totalPrice});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ProductData.fromJson(Map<String, dynamic> json) {
     createdDate = json['CreatedDate'];
     sId = json['_id'];
     id = json['id'];

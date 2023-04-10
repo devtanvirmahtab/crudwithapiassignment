@@ -3,16 +3,14 @@ import 'package:crudwithapiassignment/model/productmodel.dart';
 import 'package:crudwithapiassignment/res/app_url.dart';
 import 'package:flutter/material.dart';
 
-class UploadProdcutScreen extends StatefulWidget {
-  final String editText;
-   String? productIndex;
-   UploadProdcutScreen({Key? key,required this.editText,this.productIndex }) : super(key: key);
+class AddProdcutScreen extends StatefulWidget {
+  AddProdcutScreen({Key? key, }) : super(key: key);
 
   @override
-  State<UploadProdcutScreen> createState() => _UploadProdcutScreenState();
+  State<AddProdcutScreen> createState() => _AddProdcutScreenState();
 }
 
-class _UploadProdcutScreenState extends State<UploadProdcutScreen> {
+class _AddProdcutScreenState extends State<AddProdcutScreen> {
 
   final _form = GlobalKey<FormState>();
   bool loading = false;
@@ -32,13 +30,10 @@ class _UploadProdcutScreenState extends State<UploadProdcutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.editText == "editProduct"){
-      productNameController.text = productModel().data?[int.parse(widget.productIndex?? "")].productName ?? "" ;
-    }
-    print(productModel().data?[int.parse(widget.productIndex ?? "")].productName.toString());
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Upload Product"),
+        title: const Text("Add Product"),
         centerTitle: true,
       ),
       body: Container(
@@ -48,7 +43,7 @@ class _UploadProdcutScreenState extends State<UploadProdcutScreen> {
             key: _form,
             child: Column(
               children: [
-                Text("Upload Product Here"),
+                const Text("Add Product Here"),
                 const SizedBox(height: 10),
                 TextFormField(
                   controller: productNameController,
@@ -145,8 +140,8 @@ class _UploadProdcutScreenState extends State<UploadProdcutScreen> {
                   width: double.infinity,
                   child: loading ? Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.blue
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.blue
                     ),
                     child: Center(
                       child: CircularProgressIndicator(color: Colors.white,),
@@ -154,49 +149,37 @@ class _UploadProdcutScreenState extends State<UploadProdcutScreen> {
                   )
 
                       : ElevatedButton(
-                      child: Text("Add product"),
-                      onPressed: ()async{
-                          Map data =
-                                {
-                                  "Img":productImageController.text,
-                                "ProductCode":productCodeController.text,
-                                "ProductName":productNameController.text,
-                                "Qty":productQtyController.text,
-                                "TotalPrice":productTotalPriceController.text,
-                                "UnitPrice":productUnitPriceController.text
-                                };
+                        child: Text("Add product"),
+                        onPressed: ()async{
+                        Map data =
+                        {
+                          "Img":productImageController.text,
+                          "ProductCode":productCodeController.text,
+                          "ProductName":productNameController.text,
+                          "Qty":productQtyController.text,
+                          "TotalPrice":productTotalPriceController.text,
+                          "UnitPrice":productUnitPriceController.text
+                        };
 
                         if (_form.currentState!.validate()) {
                           loading = true;
                           setState(() {
 
                           });
-                          if(widget.editText == "editProduct"){
-                            String updateProductEndPoint = "${AppUrls.updateProductUrl}/${productModel().data![int.parse(widget.productIndex ?? "")].sId
-                            }";
+
                             final result = await NetworkApiService().gePostApiResponse(
-                                updateProductEndPoint, data);
+                            AppUrls.createProductEndPoints, data);
 
                             if(result['status']== 'success'){
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Product Updated Successfully"))
+                               ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content:  Text("Product Added Successfully"))
                               );
                             }
-                          }else{
-                            final result = await NetworkApiService().gePostApiResponse(
-                                AppUrls.createProductEndPoints, data);
-
-                            if(result['status']== 'success'){
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Product updated Successfully"))
-                              );
-                            }
-                          }
 
                           loading = false;
-                            setState(() {
+                          setState(() {
 
-                            });
+                          });
 
                         }
                       }
